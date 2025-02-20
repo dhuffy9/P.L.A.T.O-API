@@ -9,16 +9,21 @@ options = webdriver.EdgeOptions()
 options.add_experimental_option("detach", True)  # This keeps the browser open
 driver = webdriver.Edge(options=options)
 
-# Go to the website and wait for the page to load
+# Go to the website and wait for the page to loadWS
 driver.get("https://learn.pct.edu/d2l/home")
-time.sleep(2)
+time.sleep(1)
 
 # Find the penn college account button and click
 search_box = driver.find_elements(By.TAG_NAME, "button")[0]
 search_box.click()
 
-# Wait for login to complete and page to load
-time.sleep(5)  # Give time for login process
+# wait for the page to load
+time.sleep(1)
+
+if driver.current_url[:34] == "https://login.microsoftonline.com/":
+    inputs = driver.find_elements(By.TAG_NAME, "input")
+    username_input = inputs[0].send_keys("djh61@pct.edu")
+    enter_button =  inputs[2].click()
 
 # Wait for the work-to-do widget to be present
 wait = WebDriverWait(driver, 10)
