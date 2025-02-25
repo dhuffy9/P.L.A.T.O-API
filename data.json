@@ -1,0 +1,619 @@
+{
+    "class": [
+        "collection"
+    ],
+    "properties": {
+        "totalActivities": 486,
+        "start": "2025-02-25T05:33:41.041Z",
+        "end": "2025-03-04T05:33:41.041Z"
+    },
+    "entities": [
+        {
+            "class": [
+                "user-assignment-activity",
+                "activity"
+            ],
+            "rel": [
+                "https://activities.api.brightspace.com/rels/user-activity-usage"
+            ],
+            "entities": [
+                {
+                    "class": [
+                        "assignment-submission-list"
+                    ],
+                    "rel": [
+                        "https://assignments.api.brightspace.com/rels/assignment-submission-list"
+                    ],
+                    "properties": {}
+                },
+                {
+                    "class": [
+                        "relative-uri"
+                    ],
+                    "rel": [
+                        "item",
+                        "https://assessments.api.brightspace.com/rels/assessment-rubric-application"
+                    ],
+                    "properties": {
+                        "path": "/d2l/le/activities/evaluation/popoutrubric/VG1wWmQwNXNPSGxOUkVGM1dIcEpNMDFxUlhoTlFTNDVNemd3TVEudXNlcl82NjA1Ng"
+                    }
+                },
+                {
+                    "class": [
+                        "due-date",
+                        "date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2025-03-03T04:59:59.000Z",
+                        "localizedDate": "2025-03-02T23:59:59.000"
+                    }
+                },
+                {
+                    "class": [
+                        "availability-dates"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/availabilitydates"
+                    ],
+                    "properties": {
+                        "CurrentAvailabilityType": 3,
+                        "DisplayInCalendar": false
+                    }
+                },
+                {
+                    "class": [
+                        "completion",
+                        "incomplete"
+                    ],
+                    "rel": [
+                        "item",
+                        "https://activities.api.brightspace.com/rels/completion"
+                    ]
+                }
+            ],
+            "actions": [
+                {
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272110/usages/93801/users/66056/associations",
+                    "name": "query-associations",
+                    "method": "GET",
+                    "fields": [
+                        {
+                            "type": "text",
+                            "name": "type"
+                        }
+                    ]
+                },
+                {
+                    "class": [
+                        "my-assignment",
+                        "submit"
+                    ],
+                    "type": "multipart/mixed",
+                    "title": "Submit to an assignment folder",
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/93801/folders/272110/submissions/my-submission",
+                    "name": "submit",
+                    "method": "POST"
+                }
+            ],
+            "links": [
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/user-activity-usage",
+                        "self"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272110/usages/93801/users/66056"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/activity-usage"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272110/usages/93801"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/user"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.users.api.brightspace.com/66056"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/organization"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.organizations.api.brightspace.com/93801"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/evaluation"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272110/usages/93801/users/user_66056/evaluation"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/associations"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272110/usages/93801/users/66056/associations"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/assessment"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assessments.api.brightspace.com/assessment/56011/eu.rhRoAR2mZujBgPkjD3Hri_vsHkH4y8k0QM_NPtngCBo/UnVicmljfERyb3Bib3h8MjcyMTEwfA%3d%3d"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/assignment"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/93801/folders/272110"
+                }
+            ]
+        },
+        {
+            "class": [
+                "user-assignment-activity",
+                "activity"
+            ],
+            "rel": [
+                "https://activities.api.brightspace.com/rels/user-activity-usage"
+            ],
+            "entities": [
+                {
+                    "class": [
+                        "assignment-submission-list"
+                    ],
+                    "rel": [
+                        "https://assignments.api.brightspace.com/rels/assignment-submission-list"
+                    ],
+                    "properties": {}
+                },
+                {
+                    "class": [
+                        "relative-uri"
+                    ],
+                    "rel": [
+                        "item",
+                        "https://assessments.api.brightspace.com/rels/assessment-rubric-application"
+                    ],
+                    "properties": {
+                        "path": "/d2l/le/activities/evaluation/popoutrubric/VG1wWmQwNXNPSGxOUkVGM1dIcEpNMDFxUlhoT1FTNDVNemd3TVEudXNlcl82NjA1Ng"
+                    }
+                },
+                {
+                    "class": [
+                        "due-date",
+                        "date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2025-03-03T04:59:59.000Z",
+                        "localizedDate": "2025-03-02T23:59:59.000"
+                    }
+                },
+                {
+                    "class": [
+                        "availability-dates"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/availabilitydates"
+                    ],
+                    "properties": {
+                        "CurrentAvailabilityType": 3,
+                        "DisplayInCalendar": false
+                    }
+                },
+                {
+                    "class": [
+                        "completion",
+                        "incomplete"
+                    ],
+                    "rel": [
+                        "item",
+                        "https://activities.api.brightspace.com/rels/completion"
+                    ]
+                }
+            ],
+            "actions": [
+                {
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272114/usages/93801/users/66056/associations",
+                    "name": "query-associations",
+                    "method": "GET",
+                    "fields": [
+                        {
+                            "type": "text",
+                            "name": "type"
+                        }
+                    ]
+                },
+                {
+                    "class": [
+                        "my-assignment",
+                        "submit"
+                    ],
+                    "type": "multipart/mixed",
+                    "title": "Submit to an assignment folder",
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/93801/folders/272114/submissions/my-submission",
+                    "name": "submit",
+                    "method": "POST"
+                }
+            ],
+            "links": [
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/user-activity-usage",
+                        "self"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272114/usages/93801/users/66056"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/activity-usage"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272114/usages/93801"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/user"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.users.api.brightspace.com/66056"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/organization"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.organizations.api.brightspace.com/93801"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/evaluation"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272114/usages/93801/users/user_66056/evaluation"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/associations"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_272114/usages/93801/users/66056/associations"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/assignment"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/93801/folders/272114"
+                }
+            ]
+        },
+        {
+            "class": [
+                "user-assignment-activity",
+                "activity",
+                "started"
+            ],
+            "rel": [
+                "https://activities.api.brightspace.com/rels/user-activity-usage"
+            ],
+            "entities": [
+                {
+                    "class": [
+                        "assignment-submission-list"
+                    ],
+                    "rel": [
+                        "https://assignments.api.brightspace.com/rels/assignment-submission-list"
+                    ],
+                    "properties": {}
+                },
+                {
+                    "class": [
+                        "relative-uri"
+                    ],
+                    "rel": [
+                        "item",
+                        "https://assessments.api.brightspace.com/rels/assessment-rubric-application"
+                    ],
+                    "properties": {
+                        "path": "/d2l/le/activities/evaluation/popoutrubric/VG1wWmQwNXNPSGxOUkVGM1dIcEpNMDVFUlhsTlVTNDVNalUxTkEudXNlcl82NjA1Ng"
+                    }
+                },
+                {
+                    "class": [
+                        "start-date",
+                        "date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2025-02-19T15:00:00.000Z",
+                        "localizedDate": "2025-02-19T10:00:00.000"
+                    }
+                },
+                {
+                    "class": [
+                        "end-date",
+                        "date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2025-03-11T03:59:59.000Z",
+                        "localizedDate": "2025-03-10T23:59:59.000"
+                    }
+                },
+                {
+                    "class": [
+                        "due-date",
+                        "date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2025-03-04T04:59:59.000Z",
+                        "localizedDate": "2025-03-03T23:59:59.000"
+                    }
+                },
+                {
+                    "class": [
+                        "availability-dates"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/availabilitydates"
+                    ],
+                    "properties": {
+                        "CurrentAvailabilityType": 3,
+                        "DisplayInCalendar": false
+                    },
+                    "entities": [
+                        {
+                            "class": [
+                                "availability-start-date",
+                                "availability-dates"
+                            ],
+                            "rel": [
+                                "https://api.brightspace.com/rels/availabilitydate"
+                            ],
+                            "properties": {
+                                "dateTime": {
+                                    "date": "2025-02-19T15:00:00.000Z",
+                                    "localizedDate": "2025-02-19T10:00:00.000"
+                                },
+                                "availabilityType": 0
+                            }
+                        },
+                        {
+                            "class": [
+                                "availability-end-date",
+                                "availability-dates"
+                            ],
+                            "rel": [
+                                "https://api.brightspace.com/rels/availabilitydate"
+                            ],
+                            "properties": {
+                                "dateTime": {
+                                    "date": "2025-03-11T03:59:59.000Z",
+                                    "localizedDate": "2025-03-10T23:59:59.000"
+                                },
+                                "availabilityType": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "class": [
+                        "completion",
+                        "incomplete"
+                    ],
+                    "rel": [
+                        "item",
+                        "https://activities.api.brightspace.com/rels/completion"
+                    ]
+                }
+            ],
+            "actions": [
+                {
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_274121/usages/92554/users/66056/associations",
+                    "name": "query-associations",
+                    "method": "GET",
+                    "fields": [
+                        {
+                            "type": "text",
+                            "name": "type"
+                        }
+                    ]
+                },
+                {
+                    "class": [
+                        "my-assignment",
+                        "submit"
+                    ],
+                    "type": "multipart/mixed",
+                    "title": "Submit to an assignment folder",
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/92554/folders/274121/submissions/my-submission",
+                    "name": "submit",
+                    "method": "POST"
+                }
+            ],
+            "links": [
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/user-activity-usage",
+                        "self"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_274121/usages/92554/users/66056"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/activity-usage"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_274121/usages/92554"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/user"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.users.api.brightspace.com/66056"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/organization"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.organizations.api.brightspace.com/92554"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/evaluation"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_274121/usages/92554/users/user_66056/evaluation"
+                },
+                {
+                    "rel": [
+                        "https://activities.api.brightspace.com/rels/associations"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/old/activities/6606_2000_274121/usages/92554/users/66056/associations"
+                },
+                {
+                    "rel": [
+                        "https://api.brightspace.com/rels/assignment"
+                    ],
+                    "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/92554/folders/274121"
+                }
+            ]
+        }
+    ],
+    "links": [
+        {
+            "rel": [
+                "self"
+            ],
+            "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056?start=2025-02-25T05%3a33%3a41.041Z&end=2025-03-04T05%3a33%3a41.041Z&activeCoursesOnly=1"
+        },
+        {
+            "rel": [
+                "https://activities.api.brightspace.com/rels/next-period"
+            ],
+            "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056?start=2025-03-04T05%3a33%3a41.041Z&end=2025-03-11T05%3a33%3a41.041Z&activeCoursesOnly=1"
+        },
+        {
+            "rel": [
+                "https://activities.api.brightspace.com/rels/previous-period"
+            ],
+            "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056?start=2025-02-18T05%3a33%3a41.041Z&end=2025-02-25T05%3a33%3a41.041Z&activeCoursesOnly=1"
+        },
+        {
+            "rel": [
+                "https://activities.api.brightspace.com/rels/overdue"
+            ],
+            "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056/overdue?activeCoursesOnly=1"
+        }
+    ],
+    "actions": [
+        {
+            "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056",
+            "name": "select-custom-date-range",
+            "method": "GET",
+            "fields": [
+                {
+                    "type": "text",
+                    "name": "start",
+                    "value": "2025-02-25T05:33:41.041Z"
+                },
+                {
+                    "type": "text",
+                    "name": "end",
+                    "value": "2025-03-04T05:33:41.041Z"
+                },
+                {
+                    "type": "number",
+                    "name": "page"
+                },
+                {
+                    "type": "number",
+                    "name": "pageSize"
+                },
+                {
+                    "class": [
+                        "base64",
+                        "json"
+                    ],
+                    "type": "text",
+                    "name": "filter"
+                },
+                {
+                    "type": "checkbox",
+                    "name": "activeCoursesOnly",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056",
+            "name": "filter-work-to-do",
+            "method": "GET",
+            "fields": [
+                {
+                    "type": "text",
+                    "name": "start",
+                    "value": "2025-02-25T05:33:41.041Z"
+                },
+                {
+                    "type": "text",
+                    "name": "end",
+                    "value": "2025-03-04T05:33:41.041Z"
+                },
+                {
+                    "type": "number",
+                    "name": "page"
+                },
+                {
+                    "type": "number",
+                    "name": "pageSize"
+                },
+                {
+                    "type": "checkbox",
+                    "name": "embed",
+                    "value": false
+                },
+                {
+                    "class": [
+                        "base64",
+                        "json"
+                    ],
+                    "type": "text",
+                    "name": "filter",
+                    "value": "eyJjOTgxNDI3ZS1jNzIwLTQzYmEtOWVkYS0zMjcyNWExMDEyY2YiOlsiMSJdLCJkNTYxNDdhNi00MGYxLTRlN2UtYmRiNi00NWIyMmVmNTI5ODAiOlsiMjAwMCIsIjYxMDAwIiwiMzcwMDAiLCI3MDYwMDAiLCIzMDAwIiwiNTEwMDAiLCIzMjAwMCIsImUzZTkyOWE0LTUzNzYtNDA4Zi1hNTg4LWFmMWMxNWMwZDdhMCJdLCJjYTgxZmI5Yi1lY2ViLTRlNjktYjNkNy1mZDhjYzk4ZjllZTkiOlsiMCJdfQ"
+                },
+                {
+                    "type": "checkbox",
+                    "name": "activeCoursesOnly",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "href": "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056/overdue",
+            "name": "filter-overdue-activities",
+            "method": "GET",
+            "fields": [
+                {
+                    "type": "checkbox",
+                    "name": "embed",
+                    "value": false
+                },
+                {
+                    "type": "text",
+                    "name": "filter",
+                    "value": "eyJjODUzYWY5OS0yNWEyLTQwNmEtYmQ2Yy1hMWU5YTI2NTQ4M2MiOlsiMjAyNC0xMi0wM1QwNTo0NToyMS4zMjNaIiwiMjAyNS0wMi0yNVQwNTo0NToyMS4zMjNaIl19"
+                },
+                {
+                    "type": "checkbox",
+                    "name": "activeCoursesOnly",
+                    "value": true
+                }
+            ]
+        }
+    ]
+}
