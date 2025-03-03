@@ -2,160 +2,132 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from dotenv import load_dotenv
-import os
+import json
+import time
+import requests
 
-
-# Load environment variables
-load_dotenv()
-
-
-username = os.getenv("USERNAME")
-password = os.getenv("PASSWORD")
-
-# Create a browser instance with options to prevent automatic closing
+# Configure Edge options
 options = webdriver.EdgeOptions()
-options.add_experimental_option("detach", True)  # This keeps the browser open
+options.add_experimental_option("detach", True)  # Keep the browser open
+options.set_capability("ms:loggingPrefs", {"performance": "ALL"})
+
+# Initialize the driver
 driver = webdriver.Edge(options=options)
 
+# Enable Network monitoring
+driver.execute_cdp_cmd("Network.enable", {})
 
-# Clear all types of storage before starting
-driver.execute_cdp_cmd('Storage.clearDataForOrigin', {
-    "origin": "*",
-    "storageTypes": "all"
-})
-
-# Delete all cookies
-driver.delete_all_cookies()
-
-# Go to the website and wait for the page to load
+# Go to the website and complete login flow
 driver.get("https://learn.pct.edu/d2l/home")
-wait = WebDriverWait(driver, 10)  # Create a wait object with 10 second timeout
-# Wait for the button to be clickable
+wait = WebDriverWait(driver, 10)
 login_button = wait.until(EC.element_to_be_clickable((By.TAG_NAME, "button")))
 login_button.click()
 
-# Wait for the page transition
+# Wait for page transition
 wait.until(lambda driver: "microsoftonline.com" in driver.current_url or "learn.pct.edu" in driver.current_url)
 
-if "https://login.microsoftonline.com" in driver.current_url:
-    print("User has not yet been logged in, logging in.....")
-    # Wait for username input to be present
-    username_input = wait.until(EC.presence_of_element_located((By.TAG_NAME, "input")))
-    print(username_input)
-    username_input.send_keys(username)
-    # Find all inputs and click the enter button
-    inputs = driver.find_elements(By.TAG_NAME, "input")
-    print(inputs)
+print("Complete login if needed...")
+time.sleep(2)  # Give time for login if needed
 
-    inputs[2].click()
-else:
-    print("User already loged in, getting data")
-    driver.get("https://learn.pct.edu/d2l/le/worktodo/view")
+# Clear existing logs before navigating to work-to-do page
+driver.get_log('performance')
+
+# Now navigate to the work-to-do page
+print("Navigating to work-to-do page and capturing API request URLs and headers...")
+driver.get("https://learn.pct.edu/d2l/le/worktodo/view")
+
+# Wait for page to load
+time.sleep(2)
+
+# Get all logs from this navigation
+logs = driver.get_log('performance')
+
+# Dictionary to store API request headers
+api_headers = {}
+
+# Collect all API request URLs and headers
+for entry in logs:
+    log = json.loads(entry["message"])["message"]
     
+    if log.get("method") == "Network.requestWillBeSent":
+        params = log.get("params", {})
+        request = params.get("request", {})
+        url = request.get("url")
+        headers = request.get("headers", {})
+        
+        if url and ("api" in url.lower() or url.endswith((".json", ".xml"))):
+            api_headers[url] = headers
+
+# Print collected API URLs and their headers
+print("\n--- API REQUEST URLs and HEADERS ---\n")
+for url, headers in api_headers.items():
+    print(f"URL: {url}")
+    print(f"Headers: {json.dumps(headers, indent=2)}\n")
+
+
+# Dictionary to store organized request data
+request_data = {}
+
+# Define valid URL patterns to look for
+valid_urls = ["organizations", "assignments", "quizzes"]
+
+# Process each API URL
+for url in api_headers:
+    # Skip URLs containing "notifications"
+    if "notifications" in url:
+        continue
+        
+    # Check if URL contains any of our valid patterns
+    for valid_url_type in valid_urls:
+        if valid_url_type in url:
+            print(f"Found relevant URL: {url}")
+            
+            # Handle organization (class) URLs
+            if valid_url_type == valid_urls[0]:  # "organizations"
+                request_data[url] = {"assignments": [], "quizzes": []}
+            
+            # Handle assignment URLs
+            elif valid_url_type == valid_urls[1]:  # "assignments"
+                class_code = url.split("/")[-3]  # Extract class code from URL
+                
+                # Find the corresponding class URL and add this assignment
+                for class_url in request_data:
+                    if class_code in class_url:
+                        request_data[class_url]["assignments"].append(url)
+                        break
+            
+            # Handle quiz URLs
+            elif valid_url_type == valid_urls[2]:  # "quizzes"
+                 class_code = url.split("/")[-3]  # Extract class code from URL
+                 if class_code in class_url:
+                    request_data[class_url]["quizzes"].append(url)
+                    break
+                
+            # Once we've matched a URL type, no need to check other types
+            break
 
 
 
-# fetch('https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056?start=2025-02-25T05%3a33%3a41.041Z&end=2025-03-04T05%3a33%3a41.041Z&activeCoursesOnly=1', {
-#   method: 'GET',
-#   headers: {
-#     'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImNkYTlhMjQ5LTU4MWMtNGE2MC1hZmRjLWE4OGQwZWI3YWFjZCIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NDA0NjA5NjksImV4cCI6MTc0MDQ2NDU2OSwiaXNzIjoiaHR0cHM6Ly9hcGkuYnJpZ2h0c3BhY2UuY29tL2F1dGgiLCJhdWQiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aC90b2tlbiIsInRlbmFudGlkIjoiNjdmODIwMGItZGMyYS00ODU0LWFhOTctMDU1NWRkNWM1MTIxIiwic3ViIjoiNjYwNTYiLCJhenAiOiJkMmwtaWFtLWxtcyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI5Y2E1MjkyYy04NmYxLTQ3ZTYtYmI4ZC05MjM3NWZhMjViZGMifQ.vl1OQzXKL2fR7_-vfI4GNoVJhqJ8lTDjhIMu5k8iz-u7Sg2Gw6NDycww8p9tOL5XdF95l1gBAFQvsCZMLfnDqd0lqxzuCWaQpdvwSzeOlg_gcGmWX0LTnqo8Q6kk3pSj6_ltYzjsauJtJ7KhRaRr3pGAVaTWjrKcDH8b1-hppac1R3sz1DjPdDbOj6tFFOs5dTCH-XdT_yAf-bp8nhkuAEh0f8eVHYMKyXuMrf2kHYdRsjGDF66XOjsNqc9v93uEGOEwM8eHbf2OyBnX4sV7XXax0ZACk3t1mxR3ijYOYsRvhfKn0kxYBFE64EZLJa83EQmBA4RuBPEtlaEEEXQhJA', // Replace with your actual token if it's not current
-#     'Accept': '*/*',
-#     'Accept-Encoding': 'gzip, deflate, br, zstd',
-#     'Accept-Language': 'en-US,en;q=0.9',
-#   }
-# })
-#   .then(response => {
-#     if (!response.ok) {
-#       throw new Error('Network response was not ok');
-#     }
-#     return response.json();
-#   })
-#   .then(data => {
-#     console.log('Data retrieved successfully:', data);
-#   })
-#   .catch(error => {
-#     console.error('Failed to retrieve data:', error);
-#   });
 
-
-# // First, fetch the list of assignments
-# fetch('https://67f8200b-dc2a-4854-aa97-0555dd5c5121.activities.api.brightspace.com/users/66056?start=2025-02-25T05%3a33%3a41.041Z&end=2025-03-04T05%3a33%3a41.041Z&activeCoursesOnly=1', {
-#   method: 'GET',
-#   headers: {
-#     'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImNkYTlhMjQ5LTU4MWMtNGE2MC1hZmRjLWE4OGQwZWI3YWFjZCIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NDA0NjA5NjksImV4cCI6MTc0MDQ2NDU2OSwiaXNzIjoiaHR0cHM6Ly9hcGkuYnJpZ2h0c3BhY2UuY29tL2F1dGgiLCJhdWQiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aC90b2tlbiIsInRlbmFudGlkIjoiNjdmODIwMGItZGMyYS00ODU0LWFhOTctMDU1NWRkNWM1MTIxIiwic3ViIjoiNjYwNTYiLCJhenAiOiJkMmwtaWFtLWxtcyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI5Y2E1MjkyYy04NmYxLTQ3ZTYtYmI4ZC05MjM3NWZhMjViZGMifQ.vl1OQzXKL2fR7_-vfI4GNoVJhqJ8lTDjhIMu5k8iz-u7Sg2Gw6NDycww8p9tOL5XdF95l1gBAFQvsCZMLfnDqd0lqxzuCWaQpdvwSzeOlg_gcGmWX0LTnqo8Q6kk3pSj6_ltYzjsauJtJ7KhRaRr3pGAVaTWjrKcDH8b1-hppac1R3sz1DjPdDbOj6tFFOs5dTCH-XdT_yAf-bp8nhkuAEh0f8eVHYMKyXuMrf2kHYdRsjGDF66XOjsNqc9v93uEGOEwM8eHbf2OyBnX4sV7XXax0ZACk3t1mxR3ijYOYsRvhfKn0kxYBFE64EZLJa83EQmBA4RuBPEtlaEEEXQhJA',
-#     'Accept': '*/*',
-#     'Accept-Encoding': 'gzip, deflate, br, zstd',
-#     'Accept-Language': 'en-US,en;q=0.9',
-#   }
-# })
-# .then(response => {
-#   if (!response.ok) {
-#     throw new Error('Network response was not ok');
-#   }
-#   return response.json();
-# })
-# .then(data => {
-#   console.log('Assignment list retrieved successfully:', data);
-  
-#   // Extract assignment URLs from the list
-#   const assignmentLinks = data.entities.map(assignment => {
-#     const assignmentLink = assignment.links.find(link => 
-#       link.rel && link.rel.includes("https://api.brightspace.com/rels/assignment")
-#     );
+# Testing data #
+url = "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/93801/folders/272110"
+try:
+    # Get cookies from selenium session
+    selenium_cookies = driver.get_cookies()
     
-#     if (assignmentLink) {
-#       return {
-#         url: assignmentLink.href,
-#         id: assignment.links.find(link => 
-#           link.rel && link.rel.includes("self")
-#         )?.href.split('/').pop()
-#       };
-#     }
-#     return null;
-#   }).filter(link => link !== null);
-  
-#   // Fetch details for each assignment
-#   return Promise.all(assignmentLinks.map(link => 
-#     fetchAssignmentDetails(link.url)
-#   ));
-# })
-# .then(detailedAssignments => {
-#   console.log('All assignment details retrieved:', detailedAssignments);
-# })
-# .catch(error => {
-#   console.error('Failed to retrieve data:', error);
-# });
+    # Create a session object and add cookies
+    session = requests.Session()
+    for cookie in selenium_cookies:
+        session.cookies.set(cookie['name'], cookie['value'])
+    
+    # Make the request using the session with cookies and headers
+    response = session.get(url, headers=api_headers[url])
+    if response.status_code == 200:
+        data = response.json()
+        print(f"Successfully retrieved data from {url}")
+        print(json.dumps(data, indent=2))
+    else:
+        print(f"Failed to retrieve data from {url}. Status code: {response.status_code}")
+except Exception as e:
+    print(f"Error making request to {url}: {str(e)}")
 
-# // Function to fetch details for a specific assignment
-# function fetchAssignmentDetails(url) {
-#   return fetch(url, {
-#     method: 'GET',
-#     headers: {
-#       'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImNkYTlhMjQ5LTU4MWMtNGE2MC1hZmRjLWE4OGQwZWI3YWFjZCIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NDA0NjA5NjksImV4cCI6MTc0MDQ2NDU2OSwiaXNzIjoiaHR0cHM6Ly9hcGkuYnJpZ2h0c3BhY2UuY29tL2F1dGgiLCJhdWQiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aC90b2tlbiIsInRlbmFudGlkIjoiNjdmODIwMGItZGMyYS00ODU0LWFhOTctMDU1NWRkNWM1MTIxIiwic3ViIjoiNjYwNTYiLCJhenAiOiJkMmwtaWFtLWxtcyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI5Y2E1MjkyYy04NmYxLTQ3ZTYtYmI4ZC05MjM3NWZhMjViZGMifQ.vl1OQzXKL2fR7_-vfI4GNoVJhqJ8lTDjhIMu5k8iz-u7Sg2Gw6NDycww8p9tOL5XdF95l1gBAFQvsCZMLfnDqd0lqxzuCWaQpdvwSzeOlg_gcGmWX0LTnqo8Q6kk3pSj6_ltYzjsauJtJ7KhRaRr3pGAVaTWjrKcDH8b1-hppac1R3sz1DjPdDbOj6tFFOs5dTCH-XdT_yAf-bp8nhkuAEh0f8eVHYMKyXuMrf2kHYdRsjGDF66XOjsNqc9v93uEGOEwM8eHbf2OyBnX4sV7XXax0ZACk3t1mxR3ijYOYsRvhfKn0kxYBFE64EZLJa83EQmBA4RuBPEtlaEEEXQhJA',
-#       'Accept': '*/*',
-#       'Accept-Encoding': 'gzip, deflate, br, zstd',
-#       'Accept-Language': 'en-US,en;q=0.9',
-#     }
-#   })
-#   .then(response => {
-#     if (!response.ok) {
-#       throw new Error(`Network response was not ok for assignment: ${url}`);
-#     }
-#     return response.json();
-#   })
-#   .then(assignmentData => {
-#     console.log(`Details for assignment at ${url}:`, assignmentData);
-#     return {
-#       url: url,
-#       details: assignmentData
-#     };
-#   })
-#   .catch(error => {
-#     console.error(`Failed to retrieve details for assignment ${url}:`, error);
-#     return {
-#       url: url,
-#       error: error.message
-#     };
-#   });
-# }
