@@ -84,7 +84,10 @@ for url in api_headers:
             
             # Handle organization (class) URLs
             if valid_url_type == valid_urls[0]:  # "organizations"
-                request_data[url] = {"assignments": [], "quizzes": []}
+                # Extract class name from URL or response if possible
+                # For now, use the URL as the key
+                class_key = url
+                request_data[class_key] = {"assignments": [], "quizzes": []}
             
             # Handle assignment URLs
             elif valid_url_type == valid_urls[1]:  # "assignments"
@@ -98,36 +101,79 @@ for url in api_headers:
             
             # Handle quiz URLs
             elif valid_url_type == valid_urls[2]:  # "quizzes"
-                 class_code = url.split("/")[-3]  # Extract class code from URL
-                 if class_code in class_url:
-                    request_data[class_url]["quizzes"].append(url)
-                    break
+                class_code = url.split("/")[-3]  # Extract class code from URL
+                
+                # Find the corresponding class URL and add this quiz
+                for class_url in request_data:
+                    if class_code in class_url:
+                        request_data[class_url]["quizzes"].append(url)
+                        break
                 
             # Once we've matched a URL type, no need to check other types
             break
 
+# Print the organized data structure
+print("\n--- ORGANIZED CLASS DATA ---\n")
+for class_url, data in request_data.items():
+    print(f"Class URL: {class_url}")
+    print(f"Assignments: {len(data['assignments'])}")
+    print(f"Quizzes: {len(data['quizzes'])}")
+    print()
 
-
-
-# Testing data #
-url = "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/93801/folders/272110"
-try:
-    # Get cookies from selenium session
-    selenium_cookies = driver.get_cookies()
+# Now fetch actual data for each class
+for class_url, data in request_data.items():
+    print(f"\nProcessing class: {class_url}")
     
-    # Create a session object and add cookies
+    # Create a session with cookies
     session = requests.Session()
-    for cookie in selenium_cookies:
+    for cookie in driver.get_cookies():
         session.cookies.set(cookie['name'], cookie['value'])
     
-    # Make the request using the session with cookies and headers
-    response = session.get(url, headers=api_headers[url])
-    if response.status_code == 200:
-        data = response.json()
-        print(f"Successfully retrieved data from {url}")
-        print(json.dumps(data, indent=2))
-    else:
-        print(f"Failed to retrieve data from {url}. Status code: {response.status_code}")
-except Exception as e:
-    print(f"Error making request to {url}: {str(e)}")
+    # Fetch and process assignments
+    for assignment_url in data["assignments"]:
+        try:
+            response = session.get(assignment_url, headers=api_headers.get(assignment_url, {}))
+            if response.status_code == 200:
+                assignment_data = response.json()
+                print(f"Successfully retrieved assignment data from {assignment_url}")
+                # Process assignment data as needed
+            else:
+                print(f"Failed to retrieve assignment data. Status code: {response.status_code}")
+        except Exception as e:
+            print(f"Error fetching assignment data: {str(e)}")
+    
+    # Fetch and process quizzes
+    for quiz_url in data["quizzes"]:
+        try:
+            response = session.get(quiz_url, headers=api_headers.get(quiz_url, {}))
+            if response.status_code == 200:
+                quiz_data = response.json()
+                print(f"Successfully retrieved quiz data from {quiz_url}")
+                # Process quiz data as needed
+            else:
+                print(f"Failed to retrieve quiz data. Status code: {response.status_code}")
+        except Exception as e:
+            print(f"Error fetching quiz data: {str(e)}")
+
+# Testing data #
+# url = "https://67f8200b-dc2a-4854-aa97-0555dd5c5121.assignments.api.brightspace.com/93801/folders/272110"
+# try:
+#     # Get cookies from selenium session
+#     selenium_cookies = driver.get_cookies()
+    
+#     # Create a session object and add cookies
+#     session = requests.Session()
+#     for cookie in selenium_cookies:
+#         session.cookies.set(cookie['name'], cookie['value'])
+    
+#     # Make the request using the session with cookies and headers
+#     response = session.get(url, headers=api_headers[url])
+#     if response.status_code == 200:
+#         data = response.json()
+#         print(f"Successfully retrieved data from {url}")
+#         print(json.dumps(data, indent=2))
+#     else:
+#         print(f"Failed to retrieve data from {url}. Status code: {response.status_code}")
+# except Exception as e:
+#     print(f"Error making request to {url}: {str(e)}")
 
